@@ -52,7 +52,7 @@ function showPage(list, page) {
    }
 
 }
-
+showPage(list_item, 1)
 
 
 
@@ -61,61 +61,61 @@ function showPage(list, page) {
    functionality to the pagination buttons.
 ***/
 
-const appendPageLinks = (list_item) => {
+
    /*
-   1. Determine how many pages are needed for the list by dividing the
-   total number of list items by the max number of items per page
-   2. Create a div, give it the “pagination” class, and append it to the .page div
-   3. Add a ul to the “pagination” div to store the pagination links
-
-   <ul>
-      <li>
-         <a class="active" href="#">1</a>
-      </li>
-
-   4. for every page, add li and a tags with the page number text
+  
+   
    5. Add an event listener to each a tag. When they are clicked
    call the showPage function to display the appropriate page
    6. Loop over pagination links to remove active class from all links
    7. Add the active class to the link that was just clicked. You can identify that
    clicked link using event.target
    */
-   }
-   const numOfPage = list_item.length / number_of_item
-   const pageDiv = document.getElementsByClassName('page')
-   const div = document.createElement('div')
-   div.className = 'pagination';
-   pageDiv.appendChild(div)
-   const ul = document.createElement('ul')
-   for (let i = 0; i < numOfPage; i ++){
 
-      const li = document.createElement('li');
-      ul.appendChild(li);
-      const a = document.createElement('a');
-      a.className = 'active'
-      a.href = '#';
-      a.textContent = i + 1
-      li.appendChild(a)
+const appendPageLinks = studentList => {
 
-      a.addEventListener('click', e => {
+   const eachPage = Math.ceil(studentList.length/number_of_item);
+   const paginationDiv = document.createElement('div')
+   paginationDiv.className = 'pagination' 
+   const mainDiv = document.querySelector('.page')
+   mainDiv.appendChild(paginationDiv)
+   const ul = document.createElement('ul');
+   paginationDiv.appendChild(ul)
 
-         const allA = document.querySelectorAll('a')
+      for (let i = 0; i < eachPage.length; i++){
 
-         for(let i = 0; i < allA.length; i++ ){
-
-            
-
-         }
+         let li = document.createElement('li')
+         const a = document.createElement('a')
+         a.href = '#'
+         a.textContent = i + 1;
+         a.className = 'active'
+         ul.appendChild(li)
+         li.appendChild(a)
 
 
+         
+      }
+  
+const allA = document.querySelectorAll("a");
+
+for (let i = 0; i < allA.length; i++) {
+   allA[i].addEventListener("click", e => {
+    //find the current button that has active class name and remove it
+      if (e.target.className === "active") {
+        e.target.classList.remove("active");
+      }
+   // add active class name
+     else {
+      e.target.className = "active";
+      
+    }
+  });
+}
+};
 
 
 
-      })
-   }
+appendPageLinks(list_item);
 
 
 
-showPage(list_item, 2)
-
-// Remember to delete the comments that came with this file, and replace them with your own code comments.
