@@ -1,43 +1,16 @@
-/******************************************
-Treehouse Techdegree:
-FSJS project 2 - List Filter and Pagination
-******************************************/
-   
-// Study guide for this project - https://drive.google.com/file/d/1OD1diUsTMdpfMDv677TfL1xO2CEkykSz/view?usp=sharing
 
-
-/*** 
-   Add your global variables that store the DOM elements you will 
-   need to reference and/or manipulate. 
-   
-   But be mindful of which variables should be global and which 
-   should be locally scoped to one of the two main functions you're 
-   going to create. A good general rule of thumb is if the variable 
-   will only be used inside of a function, then it can be locally 
-   scoped to that function.
-***/
+// the list_item variable is to get the className which is student-item from the index.html
 const list_item = document.getElementsByClassName('student-item');
 const number_of_item = 10;
 
-/*** 
-   Create the `showPage` function to hide all of the items in the 
-   list except for the ten you want to show.
-
-   Pro Tips: 
-     - Keep in mind that with a list of 54 students, the last page 
-       will only display four.
-     - Remember that the first student has an index of 0.
-     - Remember that a function `parameter` goes in the parens when 
-       you initially define the function, and it acts as a variable 
-       or a placeholder to represent the actual function `argument` 
-       that will be passed into the parens later when you call or 
-       "invoke" the function 
-***/
+//the showPage is to show the 1st page and hide other page which the list length is more than 10
 function showPage(list, page) {
 
-   const startIndex = (page * number_of_item) - number_of_item
-   const endIndex = page * number_of_item
+   const startIndex = (page * number_of_item) - number_of_item //the result will be in the 1st page is 0 index
+   const endIndex = page * number_of_item // the result will be 10
 
+   //the for loop is to loop all the list_item 
+   //it is to show if the index is between 1 to 10, else the other which is more than 10 will be hide on the web
    for(let i = 0; i < list_item.length; i ++){
       if( i >= startIndex && i <= endIndex){
 
@@ -52,28 +25,37 @@ function showPage(list, page) {
    }
 
 }
+//call the showPage function
 showPage(list_item, 1)
 
 
 
-/*** 
-   Create the `appendPageLinks function` to generate, append, and add 
-   functionality to the pagination buttons.
-***/
-
-
-   /*
-  
-   
-   5. Add an event listener to each a tag. When they are clicked
-   call the showPage function to display the appropriate page
-   6. Loop over pagination links to remove active class from all links
-   7. Add the active class to the link that was just clicked. You can identify that
-   clicked link using event.target
-   */
-
+//this function is to append the page link on the bottom of web page
 const appendPageLinks = studentList => {
 
+//from 58 - 81 is to create the div,ul, li base on the given format
+//the for loop is to add all the tag a a class name which is call active, this active will needed for the click event
+/*<!-- pagination HTML to create dynamically -->
+      <div class="pagination">
+        <ul>
+          <li>
+            <a class="active" href="#">1</a>
+          </li>
+           <li>
+            <a href="#">2</a>
+          </li>
+           <li>
+            <a href="#">3</a>
+          </li>
+           <li>
+            <a href="#">4</a>
+          </li>
+           <li>
+            <a href="#">5</a>
+          </li>
+        </ul>
+      </div>
+      <!-- end pagination -->*/
    const eachPage = Math.ceil(studentList.length/number_of_item);
    const paginationDiv = document.createElement('div')
    paginationDiv.className = 'pagination' 
@@ -82,40 +64,57 @@ const appendPageLinks = studentList => {
    const ul = document.createElement('ul');
    paginationDiv.appendChild(ul)
 
-      for (let i = 0; i < eachPage.length; i++){
+   
+   
+      for (let i = 0; i < eachPage; i++){
 
-         let li = document.createElement('li')
-         const a = document.createElement('a')
-         a.href = '#'
-         a.textContent = i + 1;
-         a.className = 'active'
-         ul.appendChild(li)
-         li.appendChild(a)
-
-
-         
+         if (i != eachPage) {
+            let li = document.createElement("li");
+            ul.appendChild(li);
+            const a = document.createElement("a");
+            a.href = "#";
+            a.textContent = i + 1;
+            if (i === 0) {
+              a.className = 'active';
+            }
+            li.appendChild(a);
+          }
       }
   
-const allA = document.querySelectorAll("a");
 
-for (let i = 0; i < allA.length; i++) {
-   allA[i].addEventListener("click", e => {
-    //find the current button that has active class name and remove it
-      if (e.target.className === "active") {
-        e.target.classList.remove("active");
+
+      //select all the a which is the 
+      //this part is for generate click event button, it is use to only show the  10 people in the target page number
+      //for example 1st page is only show 1-10 people, the second page is 11-20....
+      const targetA = document.querySelectorAll("a");
+
+      for (let i = 0; i < targetA.length; i++) {
+         targetA[i].addEventListener("click", e => {
+          //find the current button and page that has active class name and remove it
+            if (e.target.className === "active") {
+              e.target.classList.remove("active");
+            }
+         // add active class name, when click the other page number. Only the targeted page will be show using the showPage function! 
+           else {
+               
+            let pageNumber = targetA[i].innerHTML;
+            e.target.className = "active";
+            showPage(studentList, pageNumber);
+            
+          }
+        });
       }
-   // add active class name
-     else {
-      e.target.className = "active";
-      
-    }
-  });
-}
-};
+      };
 
 
-
+//call the appendPageLinks function     
 appendPageLinks(list_item);
 
 
 
+/*
+Thanks @sradms0 on slack channel for helping me when facing difficulties, especially in the appendPageLinks function. I also research other students' projects on related github to solve the problem
+
+https://github.com/SirBuitrago/TechDegree-Project2-List-Filter-and-Pagination/blob/master/js/script.js
+
+*/
