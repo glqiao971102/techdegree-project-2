@@ -12,7 +12,8 @@ function showPage(list, page) {
    //the for loop is to loop all the list_item 
    //it is to show if the index is between 1 to 10, else the other which is more than 10 will be hide on the web
    for(let i = 0; i < list_item.length; i ++){
-      if( i >= startIndex && i <= endIndex){
+     //error 1 fixed
+      if( i >= startIndex && i < endIndex){
 
          list_item[i].style.display = 'block';
 
@@ -87,21 +88,18 @@ const appendPageLinks = studentList => {
       //this part is for generate click event button, it is use to only show the  10 people in the target page number
       //for example 1st page is only show 1-10 people, the second page is 11-20....
       const targetA = document.querySelectorAll("a");
-
+      
       for (let i = 0; i < targetA.length; i++) {
          targetA[i].addEventListener("click", e => {
           //find the current button and page that has active class name and remove it
-            if (e.target.className === "active") {
-              e.target.classList.remove("active");
-            }
-         // add active class name, when click the other page number. Only the targeted page will be show using the showPage function! 
-           else {
-               
-            let pageNumber = targetA[i].innerHTML;
-            e.target.className = "active";
-            showPage(studentList, pageNumber);
-            
-          }
+
+          //error 2 fixed
+          let pageNumber = targetA[i].innerHTML;
+          e.target.classList.remove("active");
+          e.target.className = "active";
+          showPage(studentList, pageNumber);
+           
+          
         });
       }
       };
